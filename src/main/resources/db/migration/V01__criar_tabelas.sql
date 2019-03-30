@@ -9,18 +9,20 @@ PRIMARY KEY (id_controle)
 
 CREATE TABLE public.pessoa (
 id_pessoa serial,
-nome_pessoa character varying(255)  NOT NULL ,
-dt_nascimento date NOT NULL ,
+nome character varying(255)  NOT NULL ,
+dt_nascimento date,
 email character varying(255)  NOT NULL ,
-cpf_cnpj int NOT NULL ,
+cpf_cnpj int ,
 endereco character varying(255) ,
-nome_estabelecimento character varying(255)  NOT NULL ,
-descricao_p character varying(255)  NOT NULL ,
-descricao_m character varying(400)  NOT NULL ,
-descricao_g character varying(1024)  NOT NULL ,
-timestamp timestamp NOT NULL,
-id_grupo_controle_uf int,
+nome_estabelecimento character varying(255)  ,
+descricao_p character varying(255) ,
+descricao_m character varying(400)  ,
+descricao_g character varying(1024) ,
+id_controle_situacao_pessoa int ,
+id_controle_uf int,
 cep int,
+ativo bool default true,
+timestamp TIMESTAMP default now(),
 PRIMARY KEY (id_pessoa) 
 
 );
@@ -166,7 +168,7 @@ id_baixa_bancaria serial,
 
 "valor_pagamento" numeric NOT NULL ,
 
-"timestamp" timestamp NOT NULL,
+"timestamp" timestamp default current_timestamp,
 
 CONSTRAINT "baixa_bancaria_pk" PRIMARY KEY ("id_baixa_bancaria") 
 
@@ -196,7 +198,7 @@ CREATE TABLE "calendario" (
 
 "id_grupo_controle_confirmacao" int4 NOT NULL,
 
-"timestamp" timestamp NOT NULL ,
+"timestamp" timestamp default current_timestamp ,
 
 CONSTRAINT "calendario_pk" PRIMARY KEY ("id_calendario") 
 
@@ -224,7 +226,7 @@ CREATE TABLE "contrato" (
 
 "data_assinatura" date NOT NULL,
 
-"timestamp" timestamp NOT NULL,
+"timestamp" timestamp default current_timestamp,
 
 CONSTRAINT "contrato_pk" PRIMARY KEY ("id_contrato") 
 
@@ -249,7 +251,7 @@ CREATE TABLE "convenio_pessoa" (
 
 "id_grupo_controle_convenio_medico" int4 NOT NULL,
 
-"timestamp" timestamp NOT NULL,
+"timestamp" timestamp default current_timestamp,
 
 CONSTRAINT "convenio_pessoa_pk" PRIMARY KEY ("id_convenio_pessoa") 
 
@@ -281,7 +283,7 @@ CREATE TABLE "disponibilidade" (
 
 "id_relacao_pessoa_criacao" int4 NOT NULL,--pessoa que cadastrou no sistema
 
-"timestamp" timestamp NOT NULL,
+"timestamp" timestamp default current_timestamp,
 
 CONSTRAINT "disponibilidade_pk" PRIMARY KEY ("id_disponibilidade") 
 
@@ -307,7 +309,7 @@ CREATE TABLE "arquivo" (
 
 "arquivo" bytea not null,
 
-"timestamp" timestamp NOT NULL,
+"timestamp" timestamp default current_timestamp,
 
 CONSTRAINT "arquivo_pk" PRIMARY KEY ("id_arquivo") 
 
@@ -336,7 +338,7 @@ CREATE TABLE "plano" (
 
 "id_grupo_controle_vigencia" int4 NOT NULL ,
 
-"timestamp" timestamp NOT NULL,
+"timestamp" timestamp default current_timestamp,
 
 CONSTRAINT "plano_pk" PRIMARY KEY ("id_plano") 
 
@@ -360,7 +362,7 @@ CREATE TABLE "relacao_pessoa" (
 
 "id_grupo_controle_tipo_relacao" int4 NOT NULL,
 
-"timestamp" timestamp NOT NULL,
+"timestamp" timestamp default current_timestamp,
 
 CONSTRAINT "relacao_pessoa_pk" PRIMARY KEY ("id_relacao_pessoa") 
 
@@ -374,21 +376,21 @@ ALTER TABLE "relacao_pessoa" OWNER TO "postgres";
 
 
 
-CREATE TABLE "valor_tempo_servico" (
+CREATE TABLE valor_tempo_service (
 
-"id_vl_tempo_servico" int4 NOT NULL ,
+id_vl_tempo_servico int4 NOT NULL ,
 
-"grupo_controle_servico" varchar NOT NULL ,
+grupo_controle_servico varchar NOT NULL ,
 
-"id_relacao_pessoa" int4 NOT NULL ,
+id_relacao_pessoa int4 NOT NULL ,
 
-"valor" numeric NOT NULL ,
+valor numeric NOT NULL ,
 
-"tempo_minuto" int4 NOT NULL ,
+tempo_minuto int4 NOT NULL ,
 
-"timestamp" timestamp NOT NULL,
+timestamp timestamp default current_timestamp,
 
-CONSTRAINT "valor_tempo_servico_pk" PRIMARY KEY ("id_vl_tempo_servico") 
+CONSTRAINT "valor_tempo_servico_pk" PRIMARY KEY (id_vl_tempo_servico) 
 
 )
 

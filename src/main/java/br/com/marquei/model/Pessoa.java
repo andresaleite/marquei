@@ -1,7 +1,8 @@
 package br.com.marquei.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,25 +10,33 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+
+/**
+ * @author elizabeth
+ *
+ */
 @Entity
 @Table(name="pessoa")
 public class Pessoa {
-
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_pessoa")
 	private Long id;
 	
-	@Column(name="nome_pessoa")
-	private String nomePessoa;
+	@NotNull
+	@Column(name="nome")
+	private String nome;
 	
 	@Column(name="dt_nascimento")
 	private LocalDate dataNascimento;
 	
+	@NotNull
 	@Size(min = 5 , max = 50)
 	private String email;
 	
@@ -53,16 +62,20 @@ public class Pessoa {
 	@Column(name="descricao_g")
 	private StringBuffer descricaoGrande;
 	
+	@Column(name="id_controle_situacao_pessoa")
+	private int id_controle_situacao_pessoa;
 	
 	@Column(name="id_controle_uf")
 	private int idControleUf;
 	
-	@Size(min = 8 , max = 8)
 	private Long cep;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar timestamp;
+	
 	@NotNull
-	@Column(name="timestamp")
-	private Timestamp timestamp;
+	@Column(name="ativo")
+	private boolean ativo;
 
 	public Long getId() {
 		return id;
@@ -70,14 +83,6 @@ public class Pessoa {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getNomePessoa() {
-		return nomePessoa;
-	}
-
-	public void setNomePessoa(String nomePessoa) {
-		this.nomePessoa = nomePessoa;
 	}
 
 	public LocalDate getDataNascimento() {
@@ -160,11 +165,40 @@ public class Pessoa {
 		this.cep = cep;
 	}
 
-	public Timestamp getTimestamp() {
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public int getId_controle_situacao_pessoa() {
+		return id_controle_situacao_pessoa;
+	}
+
+	public void setId_controle_situacao_pessoa(int id_controle_situacao_pessoa) {
+		this.id_controle_situacao_pessoa = id_controle_situacao_pessoa;
+	}
+
+	public Calendar getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Timestamp timestamp) {
+	public void setTimestamp(Calendar timestamp) {
 		this.timestamp = timestamp;
 	}
+
+
+
+
 }

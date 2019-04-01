@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import br.com.marquei.model.EnumSituacaoRegistro;
 import br.com.marquei.model.Pessoa;
 import br.com.marquei.repository.PessoaRepository;
 
@@ -15,6 +16,16 @@ public class PessoaService {
 	@Autowired
 	private PessoaRepository bd;
 	
+	public Pessoa salvar(Pessoa pessoa) throws Exception {
+		Pessoa salvaPessoa = bd.save(pessoa);
+		/*try {
+			salvaPessoa.setEnderecos(endereco.criarListaEnderecoDeUmaPessoa(pessoa.getEnderecos(), salvaPessoa.getId()));
+		} catch (Exception e) {
+			throw new Exception("Erro ao salvar Pessoas"+e.getMessage());
+		}*/
+		return salvaPessoa;
+	}
+	
 	public Pessoa atualizar(Long codigo, Pessoa pessoa) {
 		Pessoa pessoaSalva = buscarPessoaPorCodigo(codigo);
 		
@@ -24,9 +35,9 @@ public class PessoaService {
 	}
 
 
-	public void atualizarPropriedadeAtivo(Long codigo, Boolean ativo) {
+	public void atualizarPropriedadeAtivo(Long codigo, EnumSituacaoRegistro situacao) {
 		Pessoa pessoaSalva = buscarPessoaPorCodigo(codigo);
-		pessoaSalva.setAtivo(ativo);
+		pessoaSalva.setSituacaoRegistro(situacao);
 		bd.save(pessoaSalva);
 		
 	}

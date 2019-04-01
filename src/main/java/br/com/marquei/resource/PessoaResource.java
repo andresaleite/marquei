@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marquei.evento.RecursoCriadoEvent;
+import br.com.marquei.model.EnumSituacaoRegistro;
 import br.com.marquei.model.Pessoa;
 import br.com.marquei.repository.PessoaRepository;
 import br.com.marquei.service.PessoaService;
@@ -40,8 +41,8 @@ public class PessoaResource {
 
 	@PostMapping
 	//@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
-		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) throws Exception {
+		Pessoa pessoaSalva = pessoaService.salvar(pessoa);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
 	}
@@ -70,8 +71,8 @@ public class PessoaResource {
 	@PutMapping("/{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	//@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
-	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
-		pessoaService.atualizarPropriedadeAtivo(id, ativo);
+	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody EnumSituacaoRegistro situacao) {
+		pessoaService.atualizarPropriedadeAtivo(id, situacao);
 	}
 	
 	@GetMapping

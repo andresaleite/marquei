@@ -1,3 +1,68 @@
+CREATE TABLE public.pessoa (
+id_pessoa serial,
+nome character varying(255)  NOT NULL ,
+data_nascimento date,
+email character varying(255)  NOT NULL ,
+cpf_cnpj int ,
+nome_estabelecimento character varying(255)  ,
+situacao_registro character varying(50), --'novo editado excluido'
+timestamp TIMESTAMP,
+PRIMARY KEY (id_pessoa) 
+);
+
+
+CREATE TABLE public.endereco (
+id_endereco serial,
+id_pessoa BIGINT,
+logradouro character varying(255) ,
+numero int,
+complemento character varying(255),
+bairro character varying(100) ,
+cep BIGINT,
+cidade character varying(50),
+uf character varying(50),
+situacao_registro character varying(50), --'novo editado excluido'
+timestamp TIMESTAMP,
+PRIMARY KEY (id_endereco) 
+);
+
+CREATE TABLE public.contrato(
+	id_contrato serial,
+	id_contrato_principal BIGINT,
+	id_pessoa BIGINT,
+	forma_pagamento character varying(100),
+	valor decimal(10,02),
+	data_assinatura date,
+	descricao_p character varying(255),
+	descricao_m character varying(400),
+	descricao_g character varying(1024),
+	tipo_relacao_contrato character varying(50),
+	timestamp TIMESTAMP,
+	PRIMARY KEY (id_contrato)
+);
+
+
+ALTER TABLE public.pessoa ADD CONSTRAINT "id_pessoa_endereco_fk" FOREIGN KEY (id_pessoa) REFERENCES pessoa (id_pessoa) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE public.contrato ADD CONSTRAINT "id_pessoa_contrato_fk" FOREIGN KEY (id_pessoa) REFERENCES pessoa (id_pessoa) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE public.contrato ADD CONSTRAINT "id_contrato_principal_fk" FOREIGN KEY (id_contrato_principal) REFERENCES public.contrato (id_contrato) ON DELETE NO ACTION ON UPDATE NO ACTION;
+--ALTER TABLE public.contrato ADD CONSTRAINT "id_plano_fk" FOREIGN KEY (id_plano) REFERENCES public.plano (id_plano) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*
+
+
+
+CREATE TABLE public.relacao_pessoa (
+id_relacao_pessoa  serial,
+id_pessoa BIGINT,
+id_pessoa_pai BIGINT, -- COMMENT 'id na tabela pessoa relacionada a outra'
+id_relacao_pai int,
+tipo_relacao int,
+timestamp TIMESTAMP,
+CONSTRAINT relacao_pessoa_pk PRIMARY KEY (id_relacao_pessoa) 
+);
+ALTER TABLE public.relacao_pessoa ADD CONSTRAINT "id_pessoa_relacao_pessoa_fk" FOREIGN KEY (id_pessoa) REFERENCES pessoa (id_pessoa) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
 CREATE TABLE public.controle (
 id_controle serial ,
 id_grupo_controle int,
@@ -6,27 +71,6 @@ nome_controle character varying(255)  NOT NULL,
 situacao int NOT NULL,
 PRIMARY KEY (id_controle) 
 );
-
-CREATE TABLE public.pessoa (
-id_pessoa serial,
-nome character varying(255)  NOT NULL ,
-dt_nascimento date,
-email character varying(255)  NOT NULL ,
-cpf_cnpj int ,
-endereco character varying(255) ,
-nome_estabelecimento character varying(255)  ,
-descricao_p character varying(255) ,
-descricao_m character varying(400)  ,
-descricao_g character varying(1024) ,
-id_controle_situacao_pessoa int ,
-id_controle_uf int,
-cep int,
-ativo bool default true,
-timestamp TIMESTAMP default now(),
-PRIMARY KEY (id_pessoa) 
-
-);
-
 
 insert into public.controle (id_grupo_controle,nome_grupo_controle, nome_controle, situacao) values (1, 'situacao_controle', 'Ativo', 1);
 insert into public.controle (id_grupo_controle,nome_grupo_controle, nome_controle, situacao) values (2, 'situacao_controle', 'Desativado', 1);
@@ -156,7 +200,7 @@ insert into public.controle (id_grupo_controle, nome_grupo_controle, nome_contro
 insert into public.controle (id_grupo_controle, nome_grupo_controle, nome_controle, situacao) values (4, 'formato_imagem', 'tiff', 1);
 
 
-/*
+
 
 CREATE TABLE "baixa_bancaria" (
 
@@ -212,31 +256,6 @@ ALTER TABLE "calendario" OWNER TO "postgres";
 
 
 
-CREATE TABLE "contrato" (
-
-"id_contrato" serial ,
-
-"id_relacao_pessoa" int NOT NULL ,
-
-"id_plano" int  NOT NULL ,
-
-"forma_pagamento" int4 NOT NULL ,
-
-"valor_contrato" decimal(8,2) NOT NULL ,
-
-"data_assinatura" date NOT NULL,
-
-"timestamp" timestamp default current_timestamp,
-
-CONSTRAINT "contrato_pk" PRIMARY KEY ("id_contrato") 
-
-)
-
-WITHOUT OIDS;
-
-
-
-ALTER TABLE "contrato" OWNER TO "postgres";
 
 
 
@@ -350,29 +369,6 @@ WITHOUT OIDS;
 
 ALTER TABLE "plano" OWNER TO "postgres";
 
-
-
-CREATE TABLE "relacao_pessoa" (
-
-"id_relacao_pessoa" int4 NOT NULL,
-
-"id_pessoa" int4 NOT NULL ,
-
-"id_pessoa_pai" int4 NOT NULL ,
-
-"id_grupo_controle_tipo_relacao" int4 NOT NULL,
-
-"timestamp" timestamp default current_timestamp,
-
-CONSTRAINT "relacao_pessoa_pk" PRIMARY KEY ("id_relacao_pessoa") 
-
-)
-
-WITHOUT OIDS;
-
-
-
-ALTER TABLE "relacao_pessoa" OWNER TO "postgres";
 
 
 

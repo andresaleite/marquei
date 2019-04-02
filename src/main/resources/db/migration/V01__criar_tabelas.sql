@@ -1,51 +1,62 @@
 CREATE TABLE public.pessoa (
-id_pessoa serial,
-nome character varying(255)  NOT NULL ,
-data_nascimento date,
-email character varying(255)  NOT NULL ,
-cpf_cnpj int ,
-nome_estabelecimento character varying(255)  ,
-situacao_registro character varying(50), --'novo editado excluido'
-timestamp TIMESTAMP,
-PRIMARY KEY (id_pessoa) 
+	id_pessoa serial,
+	nome character varying(255)  NOT NULL ,
+	data_nascimento date,
+	email character varying(255)  NOT NULL ,
+	cpf_cnpj int ,
+	nome_estabelecimento character varying(255)  ,
+	descricao_p character varying(255),
+	descricao_m character varying(400),
+	descricao_g character varying(1024),
+	situacao_registro character varying(50), --'novo editado excluido'
+	timestamp TIMESTAMP,
+	PRIMARY KEY (id_pessoa) 
 );
 
-
 CREATE TABLE public.endereco (
-id_endereco serial,
-id_pessoa BIGINT,
-logradouro character varying(255) ,
-numero int,
-complemento character varying(255),
-bairro character varying(100) ,
-cep BIGINT,
-cidade character varying(50),
-uf character varying(50),
-situacao_registro character varying(50), --'novo editado excluido'
-timestamp TIMESTAMP,
-PRIMARY KEY (id_endereco) 
+	id_endereco serial,
+	id_pessoa BIGINT,
+	logradouro character varying(255) ,
+	numero int,
+	complemento character varying(255),
+	bairro character varying(100) ,
+	cep BIGINT,
+	cidade character varying(50),
+	uf character varying(50),
+	situacao_registro character varying(50), --'novo editado excluido'
+	timestamp TIMESTAMP,
+	PRIMARY KEY (id_endereco) 
 );
 
 CREATE TABLE public.contrato(
 	id_contrato serial,
-	id_contrato_principal BIGINT,
-	id_pessoa BIGINT,
+	id_plano BIGINT,
 	forma_pagamento character varying(100),
 	valor decimal(10,02),
 	data_assinatura date,
-	descricao_p character varying(255),
-	descricao_m character varying(400),
-	descricao_g character varying(1024),
-	tipo_relacao_contrato character varying(50),
+	data_fim date,
 	timestamp TIMESTAMP,
 	PRIMARY KEY (id_contrato)
 );
 
+CREATE TABLE public.contrato_pessoa(
+	id_contrato_pessoa serial,
+	id_pessoa	BIGINT,
+	id_endereco BIGINT,
+	id_contrato BIGINT,
+	tipo_relacao_contrato character varying(50),
+	situacao_registro character varying(50), --'novo editado excluido'
+	timestamp TIMESTAMP,
+	PRIMARY KEY (id_contrato_pessoa)
+);
 
-ALTER TABLE public.pessoa ADD CONSTRAINT "id_pessoa_endereco_fk" FOREIGN KEY (id_pessoa) REFERENCES pessoa (id_pessoa) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE public.contrato ADD CONSTRAINT "id_pessoa_contrato_fk" FOREIGN KEY (id_pessoa) REFERENCES pessoa (id_pessoa) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE public.contrato ADD CONSTRAINT "id_contrato_principal_fk" FOREIGN KEY (id_contrato_principal) REFERENCES public.contrato (id_contrato) ON DELETE NO ACTION ON UPDATE NO ACTION;
---ALTER TABLE public.contrato ADD CONSTRAINT "id_plano_fk" FOREIGN KEY (id_plano) REFERENCES public.plano (id_plano) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE public.endereco ADD CONSTRAINT "id_pessoa_endereco_fk" FOREIGN KEY (id_pessoa) REFERENCES public.pessoa (id_pessoa);
+ALTER TABLE public.contrato_pessoa ADD CONSTRAINT "id_contrato_pessoa_p_fk" FOREIGN KEY (id_pessoa) REFERENCES public.pessoa (id_pessoa);
+ALTER TABLE public.contrato_pessoa ADD CONSTRAINT "id_contrato_pessoa_endereco_fk" FOREIGN KEY (id_endereco) REFERENCES public.endereco (id_endereco);
+ALTER TABLE public.contrato_pessoa ADD CONSTRAINT "id_contrato_pessoa_contrato_fk" FOREIGN KEY (id_contrato) REFERENCES public.contrato(id_contrato);
+--ALTER TABLE public.contrato ADD CONSTRAINT "id_contrato_principal_fk" FOREIGN KEY (id_contrato_principal) REFERENCES public.contrato (id_contrato);
+--ALTER TABLE public.contrato ADD CONSTRAINT "id_plano_fk" FOREIGN KEY (id_plano) REFERENCES public.plano (id_plano);
 
 /*
 

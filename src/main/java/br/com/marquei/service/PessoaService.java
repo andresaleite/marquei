@@ -18,11 +18,6 @@ public class PessoaService {
 	
 	public Pessoa salvar(Pessoa pessoa) throws Exception {
 		Pessoa salvaPessoa = bd.save(pessoa);
-		/*try {
-			salvaPessoa.setEnderecos(endereco.criarListaEnderecoDeUmaPessoa(pessoa.getEnderecos(), salvaPessoa.getId()));
-		} catch (Exception e) {
-			throw new Exception("Erro ao salvar Pessoas"+e.getMessage());
-		}*/
 		return salvaPessoa;
 	}
 	

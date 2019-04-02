@@ -35,10 +35,9 @@ public class Endereco {
 	@JoinColumn(name = "id_pessoa")
 	private Pessoa pessoa;*/
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_pessoa", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pessoa")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private Pessoa pessoa;
 	
 	@Column

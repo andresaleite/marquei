@@ -1,7 +1,7 @@
 package br.com.marquei.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,9 +60,9 @@ public class Plano {
 	@Column(name="termos_contrato")
 	private StringBuffer termosContrato;
 	
-	@Column
+	@Column(name = "timestamp", updatable=false)
 	@CreationTimestamp
-	private Calendar timestamp;
+	private Timestamp timestamp;
 
 	public Long getId() {
 		return id;
@@ -128,11 +128,11 @@ public class Plano {
 		this.termosContrato = termosContrato;
 	}
 
-	public Calendar getTimestamp() {
+	public Timestamp getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Calendar timestamp) {
+	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
 

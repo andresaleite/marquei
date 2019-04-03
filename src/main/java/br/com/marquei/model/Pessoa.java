@@ -1,7 +1,7 @@
 package br.com.marquei.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -73,9 +73,9 @@ public class Pessoa {
 	@Column(name="situacao_registro")
 	private EnumSituacaoRegistro situacaoRegistro;
 	
-	@Column
+	@Column(name = "timestamp", updatable=false)
 	@CreationTimestamp
-	private Calendar timestamp;
+	private Timestamp timestamp;
 	
 	@OneToMany(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "id_pessoa")
@@ -85,10 +85,14 @@ public class Pessoa {
 	@JoinColumn(name = "id_pessoa")
 	private List<Plano> planos;
 	
+	@OneToMany(cascade = {CascadeType.ALL})
+	@JoinColumn(name = "id_pessoa")
+	private List<Contrato> contratos;
+	
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	@Column(name="tipo_pessoa")
-	private EnumTipoPessoa tipopessoa;
+	private EnumTipoPessoa tipoPessoa;
 	
 	public Long getId() {
 		return id;
@@ -138,13 +142,6 @@ public class Pessoa {
 		this.situacaoRegistro = situacaoRegistro;
 	}
 
-	public Calendar getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Calendar timestamp) {
-		this.timestamp = timestamp;
-	}
 
 	public List<Endereco> getEnderecos() {
 		return enderecos;
@@ -245,12 +242,28 @@ public class Pessoa {
 		this.planos = planos;
 	}
 
-	public EnumTipoPessoa getTipopessoa() {
-		return tipopessoa;
+	public EnumTipoPessoa getTipoPessoa() {
+		return tipoPessoa;
 	}
 
-	public void setTipopessoa(EnumTipoPessoa tipopessoa) {
-		this.tipopessoa = tipopessoa;
+	public void setTipoPessoa(EnumTipoPessoa tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
+	}
+
+	public List<Contrato> getContratos() {
+		return contratos;
+	}
+
+	public void setContratos(List<Contrato> contratos) {
+		this.contratos = contratos;
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 
 

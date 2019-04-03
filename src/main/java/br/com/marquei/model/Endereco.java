@@ -1,6 +1,6 @@
 package br.com.marquei.model;
 
-import java.util.Calendar;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,9 +63,9 @@ public class Endereco {
 	@Column(name="situacao_registro")
 	private EnumSituacaoRegistro situacaoRegistro;
 	
-	@Column
+	@Column(name = "timestamp", updatable=false)
 	@CreationTimestamp
-	private Calendar timestamp;
+	private Timestamp timestamp;
 
 	public Long getId() {
 		return id;
@@ -147,13 +147,14 @@ public class Endereco {
 		this.pessoa = pessoa;
 	}
 
-	public Calendar getTimestamp() {
+	public Timestamp getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Calendar timestamp) {
+	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
+
 	
 
 	

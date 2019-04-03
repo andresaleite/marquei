@@ -4,13 +4,13 @@ CREATE TABLE public.pessoa (
 	data_nascimento date,
 	email character varying(255)  NOT NULL ,
 	cpf_cnpj BIGINT ,
+	tipo_pessoa character varying(50),
 	nome_estabelecimento character varying(255)  ,
 	senha character varying(150),
 	descricao_p character varying(255),
 	descricao_m character varying(400),
 	descricao_g character varying(1024),
 	situacao_registro character varying(50), --'novo editado excluido'
-	tipo_pessoa character varying(50),
 	timestamp TIMESTAMP,
 	PRIMARY KEY (id_pessoa) 
 );

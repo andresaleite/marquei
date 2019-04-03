@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import br.com.marquei.model.Contrato;
 import br.com.marquei.model.EnumSituacaoRegistro;
 import br.com.marquei.model.Pessoa;
 import br.com.marquei.repository.PessoaRepository;
@@ -15,9 +16,19 @@ public class PessoaService {
 
 	@Autowired
 	private PessoaRepository bd;
+	@Autowired
+	private ContratoService contratoService; 
 	
-	public Pessoa salvar(Pessoa pessoa) throws Exception {
-		Pessoa salvaPessoa = bd.save(pessoa);
+	public Pessoa salvarNovoCliente(Pessoa pessoa) throws Exception {
+		Pessoa salvaPessoa = new Pessoa();
+		try {
+			 salvaPessoa = bd.save(pessoa);
+			 contratoService.salvarPessoaCliente(pessoa);
+			 
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		return salvaPessoa;
 	}
 	

@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.type.TimestampType;
 
 
 /**
@@ -65,11 +66,11 @@ public class Contrato {
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	@Column(name="status")
-	private EnumFormaPagamento status;
+	private EnumStatusContrato status;
 	
-	@Column
+	@Column(name = "timestamp", updatable=false)
 	@CreationTimestamp
-	private Calendar timestamp;
+	private TimestampType timestamp;
 
 	public Long getId() {
 		return id;
@@ -111,22 +112,6 @@ public class Contrato {
 		this.dataFim = dataFim;
 	}
 
-	public Calendar getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Calendar timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public EnumFormaPagamento getStatus() {
-		return status;
-	}
-
-	public void setStatus(EnumFormaPagamento status) {
-		this.status = status;
-	}
-
 	public Plano getIdPlano() {
 		return idPlano;
 	}
@@ -149,6 +134,22 @@ public class Contrato {
 
 	public void setPessoaCadastradora(Pessoa pessoaCadastradora) {
 		this.pessoaCadastradora = pessoaCadastradora;
+	}
+
+	public EnumStatusContrato getStatus() {
+		return status;
+	}
+
+	public void setStatus(EnumStatusContrato status) {
+		this.status = status;
+	}
+
+	public TimestampType getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(TimestampType timestamp) {
+		this.timestamp = timestamp;
 	}
 
 

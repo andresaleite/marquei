@@ -1,6 +1,6 @@
 package br.com.marquei.model;
 
-import java.util.Calendar;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,7 +40,7 @@ public class ContratoPessoa {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contrato")
     @OnDelete(action = OnDeleteAction.CASCADE)
-	private Contrato contratos;
+	private Contrato contrato;
 	
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -52,9 +52,9 @@ public class ContratoPessoa {
 	@Column(name="situacao_registro")
 	private EnumSituacaoRegistro situacaoRegistro;
 	
-	@Column
+	@Column(name = "timestamp", updatable=false)
 	@CreationTimestamp
-	private Calendar timestamp;
+	private Timestamp timestamp;
 	
 
 	public Long getId() {
@@ -81,14 +81,6 @@ public class ContratoPessoa {
 		this.situacaoRegistro = situacaoRegistro;
 	}
 
-	public Calendar getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Calendar timestamp) {
-		this.timestamp = timestamp;
-	}
-
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
@@ -97,8 +89,20 @@ public class ContratoPessoa {
 		this.pessoa = pessoa;
 	}
 
-	public void setContratos(Contrato contratos) {
-		this.contratos = contratos;
+	public Contrato getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(Contrato contrato) {
+		this.contrato = contrato;
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 
 

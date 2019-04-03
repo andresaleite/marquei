@@ -6,6 +6,5 @@ import br.com.marquei.model.Contrato;
 
 public interface ContratoRepository extends JpaRepository<Contrato, Long>{
 
-	
 
 }

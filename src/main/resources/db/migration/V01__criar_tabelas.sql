@@ -3,12 +3,14 @@ CREATE TABLE public.pessoa (
 	nome character varying(255)  NOT NULL ,
 	data_nascimento date,
 	email character varying(255)  NOT NULL ,
-	cpf_cnpj int ,
+	cpf_cnpj BIGINT ,
 	nome_estabelecimento character varying(255)  ,
+	senha character varying(150),
 	descricao_p character varying(255),
 	descricao_m character varying(400),
 	descricao_g character varying(1024),
 	situacao_registro character varying(50), --'novo editado excluido'
+	tipo_pessoa character varying(50),
 	timestamp TIMESTAMP,
 	PRIMARY KEY (id_pessoa) 
 );
@@ -31,10 +33,13 @@ CREATE TABLE public.endereco (
 CREATE TABLE public.contrato(
 	id_contrato serial,
 	id_plano BIGINT,
+	id_pessoa_cadastradora BIGINT,
+	id_endereco BIGINT,
 	forma_pagamento character varying(100),
 	valor decimal(10,02),
 	data_assinatura date,
 	data_fim date,
+	status character varying(100),
 	timestamp TIMESTAMP,
 	PRIMARY KEY (id_contrato)
 );
@@ -42,7 +47,6 @@ CREATE TABLE public.contrato(
 CREATE TABLE public.contrato_pessoa(
 	id_contrato_pessoa serial,
 	id_pessoa	BIGINT,
-	id_endereco BIGINT,
 	id_contrato BIGINT,
 	tipo_relacao_contrato character varying(50),
 	situacao_registro character varying(50), --'novo editado excluido'
@@ -50,42 +54,33 @@ CREATE TABLE public.contrato_pessoa(
 	PRIMARY KEY (id_contrato_pessoa)
 );
 
+CREATE TABLE public.plano(
+	id_plano serial,
+	id_pessoa BIGINT,
+	valor decimal(10,02),
+	data_inicio date,
+	data_fim date,
+	status character varying(100),
+	titulo character varying(255),
+	descricao character varying(400),
+	termos_contrato character varying(1024),
+	timestamp TIMESTAMP,
+	PRIMARY KEY (id_plano)
+);
 
-ALTER TABLE public.endereco ADD CONSTRAINT "id_pessoa_endereco_fk" FOREIGN KEY (id_pessoa) REFERENCES public.pessoa (id_pessoa);
-ALTER TABLE public.contrato_pessoa ADD CONSTRAINT "id_contrato_pessoa_p_fk" FOREIGN KEY (id_pessoa) REFERENCES public.pessoa (id_pessoa);
-ALTER TABLE public.contrato_pessoa ADD CONSTRAINT "id_contrato_pessoa_endereco_fk" FOREIGN KEY (id_endereco) REFERENCES public.endereco (id_endereco);
-ALTER TABLE public.contrato_pessoa ADD CONSTRAINT "id_contrato_pessoa_contrato_fk" FOREIGN KEY (id_contrato) REFERENCES public.contrato(id_contrato);
---ALTER TABLE public.contrato ADD CONSTRAINT "id_contrato_principal_fk" FOREIGN KEY (id_contrato_principal) REFERENCES public.contrato (id_contrato);
---ALTER TABLE public.contrato ADD CONSTRAINT "id_plano_fk" FOREIGN KEY (id_plano) REFERENCES public.plano (id_plano);
+
+insert into public.pessoa (id_pessoa,nome, data_nascimento, email, cpf_cnpj, tipo_pessoa, nome_estabelecimento, senha, situacao_registro) values (1, 'Andresa', '1980-04-15', 'andresaleite@gmail.com', 90765788187, 'FISICA','','deesa','CONFIRMADO');
+insert into public.endereco (id_endereco,id_pessoa, numero, complemento, bairro, cep, cidade, uf, situacao_registro) values (1, 1, 210, 'Edifício Estrela', 'Sudoeste', 70673409, 'Cruzeiro', 'DISTRITO_FEDERAL','CONFIRMADO');
+insert into public.plano (id_plano,id_pessoa, valor, data_inicio, data_fim, status, titulo, descricao, termos_contrato) values (1, 1, 0.0, now(), '2500-04-15','VIGENTE','Cliente dos serviços oferecidos pelo marquei.','Cliente blá blá blá', 'termos do contrato...');
+insert into public.contrato (id_contrato,id_plano, id_pessoa_cadastradora, id_endereco, forma_pagamento, valor, data_assinatura, data_fim, status) values (1, 1, 1, 1, 'SEM_PAGAMENTO', 0.0, now(), '2500-04-15', 'VIGENTE');
+insert into public.contrato_pessoa (id_contrato_pessoa, id_pessoa,id_contrato, tipo_relacao_contrato, situacao_registro) values (1, 1, 1, 'CLIENTE', 'CONFIRMADO');
+
+insert into public.plano (id_plano,id_pessoa, valor, data_inicio, data_fim, status, titulo, descricao, termos_contrato) values (2, 1, 0.0, now(), '2500-04-15','VIGENTE','Cadastrador de clientes','Cadastrador blá blá blá', 'termos do contrato cadastrador sem vinculo empregatício...');
+insert into public.contrato (id_contrato,id_plano, id_pessoa_cadastradora, id_endereco, forma_pagamento, valor, data_assinatura, data_fim, status) values (2, 2, 1, 1, 'SEM_PAGAMENTO', 0.0, now(), '2500-04-15', 'VIGENTE');
+insert into public.contrato_pessoa (id_contrato_pessoa, id_pessoa,id_contrato, tipo_relacao_contrato, situacao_registro) values (2, 1, 2, 'CADASTRADOR', 'CONFIRMADO');
 
 /*
 
-
-
-CREATE TABLE public.relacao_pessoa (
-id_relacao_pessoa  serial,
-id_pessoa BIGINT,
-id_pessoa_pai BIGINT, -- COMMENT 'id na tabela pessoa relacionada a outra'
-id_relacao_pai int,
-tipo_relacao int,
-timestamp TIMESTAMP,
-CONSTRAINT relacao_pessoa_pk PRIMARY KEY (id_relacao_pessoa) 
-);
-ALTER TABLE public.relacao_pessoa ADD CONSTRAINT "id_pessoa_relacao_pessoa_fk" FOREIGN KEY (id_pessoa) REFERENCES pessoa (id_pessoa) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-
-CREATE TABLE public.controle (
-id_controle serial ,
-id_grupo_controle int,
-nome_grupo_controle character varying(255)  NOT NULL,
-nome_controle character varying(255)  NOT NULL,
-situacao int NOT NULL,
-PRIMARY KEY (id_controle) 
-);
-
-insert into public.controle (id_grupo_controle,nome_grupo_controle, nome_controle, situacao) values (1, 'situacao_controle', 'Ativo', 1);
-insert into public.controle (id_grupo_controle,nome_grupo_controle, nome_controle, situacao) values (2, 'situacao_controle', 'Desativado', 1);
-insert into public.controle (id_grupo_controle, nome_grupo_controle,nome_controle, situacao) values (3, 'situacao_controle', 'Em análise', 1);
 
 insert into public.controle (id_grupo_controle, nome_grupo_controle, nome_controle, situacao) values (1, 'vigencia_plano', 'Mensal', 1);
 insert into public.controle (id_grupo_controle, nome_grupo_controle, nome_controle, situacao) values (2, 'vigencia_plano', 'Bimestral', 1);

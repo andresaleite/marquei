@@ -6,7 +6,7 @@ package br.com.marquei.model;
  * Enum das possíveis situaçoes do registro (linha) da tabela do banco de dados.
  */
 public enum EnumSituacaoRegistro {
-	A_CONFIRMAR,
+	PENDENTE,
 	CONFIRMADO,
 	EDITADO,
 	EXCLUIDO

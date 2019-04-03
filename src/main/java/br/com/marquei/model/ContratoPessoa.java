@@ -1,21 +1,23 @@
 package br.com.marquei.model;
 
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
-
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  * @author andresaleite@gmailcom
@@ -30,13 +32,15 @@ public class ContratoPessoa {
 	@Column(name="id_contrato_pessoa")
 	private Long id;
 	
-	@OneToMany
-	@Column(name="id_pessoa")
-	private List<Pessoa> pessoas;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pessoa")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+	private Pessoa pessoa;
 	
-	@OneToMany
-	@Column(name="id_endereco")
-	private List<Endereco> enderecos;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_contrato")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+	private Contrato contratos;
 	
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -51,6 +55,7 @@ public class ContratoPessoa {
 	@Column
 	@CreationTimestamp
 	private Calendar timestamp;
+	
 
 	public Long getId() {
 		return id;
@@ -58,22 +63,6 @@ public class ContratoPessoa {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public List<Pessoa> getPessoas() {
-		return pessoas;
-	}
-
-	public void setPessoas(List<Pessoa> pessoas) {
-		this.pessoas = pessoas;
-	}
-
-	public List<Endereco> getEnderecos() {
-		return enderecos;
-	}
-
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
 	}
 
 	public EnumTipoRelacaoContrato getTipoRelacaoContrato() {
@@ -99,6 +88,19 @@ public class ContratoPessoa {
 	public void setTimestamp(Calendar timestamp) {
 		this.timestamp = timestamp;
 	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
+	}
+
+	public void setContratos(Contrato contratos) {
+		this.contratos = contratos;
+	}
+
 
 
 }

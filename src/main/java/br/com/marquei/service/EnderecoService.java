@@ -19,7 +19,7 @@ public class EnderecoService {
 	public List<Endereco> criarListaEnderecoDeUmaPessoa(List<Endereco> enderecos, Long idPessoa) {
 		for(Endereco e: enderecos) {
 			e.getPessoa().setId(idPessoa);
-			e.setSituacaoRegistro(EnumSituacaoRegistro.A_CONFIRMAR);
+			e.setSituacaoRegistro(EnumSituacaoRegistro.PENDENTE);
 			bd.save(e);
 		}
 		return enderecos;

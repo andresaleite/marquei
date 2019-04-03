@@ -20,8 +20,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name="endereco")
 public class Endereco {
@@ -30,10 +28,6 @@ public class Endereco {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_endereco")
 	private Long id;
-	
-	/*@ManyToOne
-	@JoinColumn(name = "id_pessoa")
-	private Pessoa pessoa;*/
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pessoa")

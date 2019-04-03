@@ -3,20 +3,19 @@ package br.com.marquei.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -34,8 +33,19 @@ public class Contrato {
 	@Column(name="id_contrato")
 	private Long id;
 	
-	@Column(name="id_plano")
-	private Long idPlano;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_plano")
+	private Plano idPlano;
+	
+	@ManyToOne
+    @JoinColumn(name = "id_pessoa_cadastradora")
+    private Pessoa pessoaCadastradora;
+	
+	//endereço do contrato
+	@ManyToOne
+	@JoinColumn( name = "id_endereco")
+	private Endereco endereco;
+	
 	
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -52,6 +62,11 @@ public class Contrato {
 	@Column(name="data_fim")
 	private LocalDate dataFim;
 	
+	@Enumerated(EnumType.STRING)
+	@NotNull
+	@Column(name="status")
+	private EnumFormaPagamento status;
+	
 	@Column
 	@CreationTimestamp
 	private Calendar timestamp;
@@ -62,14 +77,6 @@ public class Contrato {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getIdPlano() {
-		return idPlano;
-	}
-
-	public void setIdPlano(Long idPlano) {
-		this.idPlano = idPlano;
 	}
 
 	public EnumFormaPagamento getFormaPagamento() {
@@ -110,6 +117,38 @@ public class Contrato {
 
 	public void setTimestamp(Calendar timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public EnumFormaPagamento getStatus() {
+		return status;
+	}
+
+	public void setStatus(EnumFormaPagamento status) {
+		this.status = status;
+	}
+
+	public Plano getIdPlano() {
+		return idPlano;
+	}
+
+	public void setIdPlano(Plano idPlano) {
+		this.idPlano = idPlano;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public Pessoa getPessoaCadastradora() {
+		return pessoaCadastradora;
+	}
+
+	public void setPessoaCadastradora(Pessoa pessoaCadastradora) {
+		this.pessoaCadastradora = pessoaCadastradora;
 	}
 
 

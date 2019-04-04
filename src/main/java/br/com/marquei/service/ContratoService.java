@@ -19,7 +19,7 @@ import br.com.marquei.repository.ContratoRepository;
 public class ContratoService {
 	
 	@Autowired
-	private ContratoRepository bdContrato;
+	private ContratoRepository bdContrato; 
 
 	@Autowired
 	private ContratoPessoaRepository bdRelacionamento;

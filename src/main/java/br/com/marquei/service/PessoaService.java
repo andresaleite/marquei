@@ -24,7 +24,6 @@ public class PessoaService {
 		try {
 			 salvaPessoa = bd.save(pessoa);
 			 contratoService.salvarPessoaCliente(pessoa);
-			 
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

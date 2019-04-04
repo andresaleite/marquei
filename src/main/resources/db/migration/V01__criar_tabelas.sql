@@ -1,5 +1,5 @@
 CREATE TABLE public.pessoa (
-	id_pessoa serial,
+	id_pessoa serial PRIMARY KEY,
 	nome character varying(255)  NOT NULL ,
 	data_nascimento date,
 	email character varying(255)  NOT NULL ,
@@ -11,8 +11,7 @@ CREATE TABLE public.pessoa (
 	descricao_m character varying(400),
 	descricao_g character varying(1024),
 	situacao_registro character varying(50), --'novo editado excluido'
-	timestamp TIMESTAMP,
-	PRIMARY KEY (id_pessoa) 
+	timestamp TIMESTAMP
 );
 
 CREATE TABLE public.endereco (
@@ -68,20 +67,19 @@ CREATE TABLE public.plano(
 	PRIMARY KEY (id_plano)
 );
 
+insert into public.pessoa (nome, data_nascimento, email, cpf_cnpj, tipo_pessoa, nome_estabelecimento, senha, situacao_registro,timestamp) values ( 'Andresa', '1980-04-15', 'andresaleite@gmail.com', 90765788187, 'FISICA','','deesa','CONFIRMADO',now());
+insert into public.endereco (id_pessoa, numero, complemento, bairro, cep, cidade, uf, situacao_registro,timestamp) values (1, 210, 'Edifício Estrela', 'Sudoeste', 70673409, 'Cruzeiro', 'DISTRITO_FEDERAL','CONFIRMADO',now());
+insert into public.plano (id_pessoa, valor, data_inicio, data_fim, status, titulo, descricao, termos_contrato,timestamp) values ( 1, 0.0, now(), '2500-04-15','VIGENTE','Cliente dos serviços oferecidos pelo marquei.','Cliente blá blá blá', 'termos do contrato...',now());
+insert into public.contrato (id_plano, id_pessoa_cadastradora, id_endereco, forma_pagamento, valor, data_assinatura, data_fim, status,timestamp) values ( 1, 1, 1, 'SEM_PAGAMENTO', 0.0, now(), '2500-04-15', 'VIGENTE',now());
+insert into public.contrato_pessoa ( id_pessoa,id_contrato, tipo_relacao_contrato, situacao_registro,timestamp) values ( 1, 1, 'CLIENTE', 'CONFIRMADO',now());
 
-insert into public.pessoa (id_pessoa,nome, data_nascimento, email, cpf_cnpj, tipo_pessoa, nome_estabelecimento, senha, situacao_registro) values (1, 'Andresa', '1980-04-15', 'andresaleite@gmail.com', 90765788187, 'FISICA','','deesa','CONFIRMADO');
-insert into public.endereco (id_endereco,id_pessoa, numero, complemento, bairro, cep, cidade, uf, situacao_registro) values (1, 1, 210, 'Edifício Estrela', 'Sudoeste', 70673409, 'Cruzeiro', 'DISTRITO_FEDERAL','CONFIRMADO');
-insert into public.plano (id_plano,id_pessoa, valor, data_inicio, data_fim, status, titulo, descricao, termos_contrato) values (1, 1, 0.0, now(), '2500-04-15','VIGENTE','Cliente dos serviços oferecidos pelo marquei.','Cliente blá blá blá', 'termos do contrato...');
-insert into public.contrato (id_contrato,id_plano, id_pessoa_cadastradora, id_endereco, forma_pagamento, valor, data_assinatura, data_fim, status) values (1, 1, 1, 1, 'SEM_PAGAMENTO', 0.0, now(), '2500-04-15', 'VIGENTE');
-insert into public.contrato_pessoa (id_contrato_pessoa, id_pessoa,id_contrato, tipo_relacao_contrato, situacao_registro) values (1, 1, 1, 'CLIENTE', 'CONFIRMADO');
+insert into public.plano (id_pessoa, valor, data_inicio, data_fim, status, titulo, descricao, termos_contrato,timestamp) values ( 1, 0.0, now(), '2500-04-15','VIGENTE','Cadastrador de clientes','Cadastrador blá blá blá', 'termos do contrato cadastrador sem vinculo empregatício...',now());
+insert into public.contrato (id_plano, id_pessoa_cadastradora, id_endereco, forma_pagamento, valor, data_assinatura, data_fim, status,timestamp) values ( 2, 1, 1, 'SEM_PAGAMENTO', 0.0, now(), '2500-04-15', 'VIGENTE',now());
+insert into public.contrato_pessoa ( id_pessoa,id_contrato, tipo_relacao_contrato, situacao_registro,timestamp) values ( 1, 2, 'CADASTRADOR', 'CONFIRMADO',now());
 
-insert into public.plano (id_plano,id_pessoa, valor, data_inicio, data_fim, status, titulo, descricao, termos_contrato) values (2, 1, 0.0, now(), '2500-04-15','VIGENTE','Cadastrador de clientes','Cadastrador blá blá blá', 'termos do contrato cadastrador sem vinculo empregatício...');
-insert into public.contrato (id_contrato,id_plano, id_pessoa_cadastradora, id_endereco, forma_pagamento, valor, data_assinatura, data_fim, status) values (2, 2, 1, 1, 'SEM_PAGAMENTO', 0.0, now(), '2500-04-15', 'VIGENTE');
-insert into public.contrato_pessoa (id_contrato_pessoa, id_pessoa,id_contrato, tipo_relacao_contrato, situacao_registro) values (2, 1, 2, 'CADASTRADOR', 'CONFIRMADO');
+ALTER TABLE public.pessoa ALTER COLUMN id_pessoa SET DEFAULT nextval('public.pessoa_id_pessoa_seq'::regclass);
 
 /*
-
-
 insert into public.controle (id_grupo_controle, nome_grupo_controle, nome_controle, situacao) values (1, 'vigencia_plano', 'Mensal', 1);
 insert into public.controle (id_grupo_controle, nome_grupo_controle, nome_controle, situacao) values (2, 'vigencia_plano', 'Bimestral', 1);
 insert into public.controle (id_grupo_controle, nome_grupo_controle, nome_controle, situacao) values (3, 'vigencia_plano', 'Trimestral', 1);

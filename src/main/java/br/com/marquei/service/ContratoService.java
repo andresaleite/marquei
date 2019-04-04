@@ -1,8 +1,6 @@
 package br.com.marquei.service;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.marquei.model.Contrato;
@@ -21,32 +19,27 @@ import br.com.marquei.repository.ContratoRepository;
 public class ContratoService {
 	
 	@Autowired
-	private ContratoRepository bd;
+	private ContratoRepository bdContrato;
 
 	@Autowired
 	private ContratoPessoaRepository bdRelacionamento;
 	
-	@Autowired
-	private ContratoPessoa relacionamento;
-	
-	@Autowired
-	private Contrato contrato;
-	
-	@Autowired
-	private Plano plano;
-	
-	public Contrato salvar(Contrato contrato) throws Exception {
-		Contrato salvaContrato = bd.save(contrato);
-		return salvaContrato;
-	}
-	
 	public Contrato salvarPessoaCliente(Pessoa pessoa) throws Exception {
+		Contrato contrato = new Contrato();
+		ContratoPessoa relacionamento = new ContratoPessoa();
+		Plano plano = new Plano();
 		contrato.setFormaPagamento(EnumFormaPagamento.SEM_PAGAMENTO);
 		plano.setId(1L);
 		contrato.setIdPlano(plano);
 		contrato.setPessoaCadastradora(pessoa);
 		contrato.setStatus(EnumStatusContrato.VIGENTE);
-		bd.save(contrato);
+		contrato = setEnderecoExitente(pessoa, contrato);
+		try {
+			bdContrato.save(contrato);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
 		relacionamento.setContrato(contrato);
 		relacionamento.setPessoa(pessoa);
 		relacionamento.setSituacaoRegistro(EnumSituacaoRegistro.CONFIRMADO);
@@ -55,27 +48,15 @@ public class ContratoService {
 		
 		return contrato;
 	}
+
+	private Contrato setEnderecoExitente(Pessoa pessoa, Contrato c) {
+		if(pessoa != null) 
+			if(pessoa.getEnderecos() != null)
+				if(pessoa.getEnderecos().size()>0)
+					c.setEndereco(pessoa.getEnderecos().get(0));
+		return c;
+	}
 	
-	public Contrato atualizar(Long codigo, Contrato contrato) {
-		Contrato contratoSalva = buscarContratoPorCodigo(codigo);
-		BeanUtils.copyProperties(contrato, contratoSalva, "codigo");
-		return bd.save(contratoSalva);
-	}
-
-
-	public void atualizarPropriedadeAtivo(Long codigo) {
-		Contrato contratoSalva = buscarContratoPorCodigo(codigo);
-		bd.save(contratoSalva);
-		
-	}
-
-	public Contrato buscarContratoPorCodigo(Long codigo) {
-		Contrato contratoSalva = bd.findOne(codigo);
-		if(contratoSalva == null) {
-			throw new EmptyResultDataAccessException(1);
-		}
-		return contratoSalva;
-	}
 	
 
 }

@@ -67,6 +67,58 @@ CREATE TABLE public.plano(
 	PRIMARY KEY (id_plano)
 );
 
+CREATE TABLE public.usuario (
+	codigo  SERIAL PRIMARY KEY,
+	nome character varying(50) NOT NULL,
+	email character varying(50) NOT NULL,
+	senha character varying(150) NOT NULL
+);
+
+CREATE TABLE public.permissao (
+	codigo  SERIAL PRIMARY KEY,
+	descricao character varying(50) NOT NULL
+);
+
+CREATE TABLE public.usuario_permissao (
+	codigo_usuario BIGINT NOT NULL,
+	codigo_permissao BIGINT NOT NULL,
+	PRIMARY KEY (codigo_usuario, codigo_permissao),
+	FOREIGN KEY (codigo_usuario) REFERENCES usuario(codigo),
+	FOREIGN KEY (codigo_permissao) REFERENCES permissao(codigo)
+);
+
+INSERT INTO public.usuario (codigo, nome, email, senha) values (1, 'Administrador', 'admin@marquei.com.br', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.');
+INSERT INTO public.usuario (codigo, nome, email, senha) values (2, 'Maria Silva', 'maria@marquei.com.br', '$2a$10$Zc3w6HyuPOPXamaMhh.PQOXvDnEsadztbfi6/RyZWJDzimE8WQjaq');
+
+INSERT INTO public.permissao (codigo, descricao) values (1, 'ROLE_CADASTRAR_PERMISSAO');
+INSERT INTO public.permissao (codigo, descricao) values (2, 'ROLE_PESQUISAR_PERMISSAO');
+
+INSERT INTO public.permissao (codigo, descricao) values (3, 'ROLE_CADASTRAR_PESSOA');
+INSERT INTO public.permissao (codigo, descricao) values (4, 'ROLE_REMOVER_PESSOA');
+INSERT INTO public.permissao (codigo, descricao) values (5, 'ROLE_PESQUISAR_PESSOA');
+
+INSERT INTO public.permissao (codigo, descricao) values (6, 'ROLE_CADASTRAR_PLANO');
+INSERT INTO public.permissao (codigo, descricao) values (7, 'ROLE_REMOVER_PLANO');
+INSERT INTO public.permissao (codigo, descricao) values (8, 'ROLE_PESQUISAR_PLANO');
+INSERT INTO public.permissao (codigo, descricao) values (9, 'ROLE_ALTERAR_PLANO');
+
+-- admin
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 1);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 2);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 3);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 4);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 5);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 6);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 7);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 8);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 9);
+
+-- maria
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (2, 2);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (2, 5);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (2, 8);
+
+
 insert into public.pessoa (nome, data_nascimento, email, cpf_cnpj, tipo_pessoa, nome_estabelecimento, senha, situacao_registro,timestamp) values ( 'Andresa', '1980-04-15', 'andresaleite@gmail.com', 90765788187, 'FISICA','','deesa','CONFIRMADO',now());
 insert into public.endereco (id_pessoa, numero, complemento, bairro, cep, cidade, uf, situacao_registro,timestamp) values (1, 210, 'Edifício Estrela', 'Sudoeste', 70673409, 'Cruzeiro', 'DISTRITO_FEDERAL','CONFIRMADO',now());
 insert into public.plano (id_pessoa, valor, data_inicio, data_fim, status, titulo, descricao, termos_contrato,timestamp) values ( 1, 0.0, now(), '2500-04-15','VIGENTE','Cliente dos serviços oferecidos pelo marquei.','Cliente blá blá blá', 'termos do contrato...',now());

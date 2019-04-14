@@ -89,6 +89,7 @@ CREATE TABLE public.usuario_permissao (
 
 INSERT INTO public.usuario (codigo, nome, email, senha) values (1, 'Administrador', 'admin@marquei.com.br', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.');
 INSERT INTO public.usuario (codigo, nome, email, senha) values (2, 'Maria Silva', 'maria@marquei.com.br', '$2a$10$Zc3w6HyuPOPXamaMhh.PQOXvDnEsadztbfi6/RyZWJDzimE8WQjaq');
+INSERT INTO public.usuario (codigo, nome, email, senha) values (3, 'Andresa', 'andresaleite@marquei.com.br', '$2a$10$U6YRT.B8sUp.L.Wg6XrIcukG57VNsd1yONxCT.9hRoYw/AlY4mSo.');
 
 INSERT INTO public.permissao (codigo, descricao) values (1, 'ROLE_CADASTRAR_PERMISSAO');
 INSERT INTO public.permissao (codigo, descricao) values (2, 'ROLE_PESQUISAR_PERMISSAO');

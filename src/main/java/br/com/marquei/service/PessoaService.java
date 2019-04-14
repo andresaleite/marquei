@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import br.com.marquei.model.Contrato;
 import br.com.marquei.model.EnumSituacaoRegistro;
 import br.com.marquei.model.Pessoa;
 import br.com.marquei.repository.PessoaRepository;
